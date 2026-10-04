@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
 
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover">
 
   <title>Live Interativa</title>
 
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -19,27 +25,229 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: black;
+      background: #080b12;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    #livecade {
+    /* TELA COMPLETA */
+
+    .live {
       position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      border: none;
+      overflow: hidden;
+      background: #080b12;
+    }
+
+
+    /* =========================
+       CABEÇALHO
+       ========================= */
+
+    .top {
+      position: absolute;
+      z-index: 10;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 8%;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(5,8,15,.98),
+          rgba(5,8,15,.88)
+        );
+
+      color: white;
+      text-align: center;
+
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+
+    .title {
+      font-size: clamp(18px, 5vw, 29px);
+      font-weight: 900;
+      letter-spacing: .5px;
+    }
+
+    .instruction {
+      margin-top: 4px;
+
+      font-size: clamp(11px, 3vw, 17px);
+      font-weight: 600;
+
+      color: #e7e7e7;
+    }
+
+    .gift {
+      color: #ffd54a;
+      font-weight: 900;
+    }
+
+
+    /* =========================
+       JOGO
+       ========================= */
+
+    .game {
+      position: absolute;
+
+      z-index: 1;
+
+      left: 0;
+      top: 8%;
+
+      width: 100%;
+      height: 84%;
+
+      overflow: hidden;
+
       background: black;
     }
+
+    .game iframe {
+      width: 100%;
+      height: 100%;
+
+      border: 0;
+
+      display: block;
+
+      background: black;
+    }
+
+
+    /* =========================
+       RODAPÉ
+       ========================= */
+
+    .bottom {
+      position: absolute;
+
+      z-index: 10;
+
+      bottom: 0;
+      left: 0;
+
+      width: 100%;
+      height: 8%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 0 12px;
+
+      background:
+        linear-gradient(
+          0deg,
+          rgba(5,8,15,.98),
+          rgba(5,8,15,.88)
+        );
+
+      border-top: 1px solid rgba(255,255,255,.12);
+
+      color: white;
+      text-align: center;
+    }
+
+    .comment {
+      font-size: clamp(13px, 3.5vw, 19px);
+      font-weight: 800;
+    }
+
+    .speaker {
+      color: #5ed7ff;
+    }
+
+
+    /* pequeno brilho para chamar atenção
+       sem ficar piscando demais */
+
+    @keyframes glow {
+
+      0%, 100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .75;
+      }
+
+    }
+
+    .gift {
+      animation: glow 2.2s ease-in-out infinite;
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <iframe
-    id="livecade"
-    src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
-    allow="autoplay"
-  ></iframe>
+<div class="live">
+
+
+  <!-- CABEÇALHO -->
+
+  <div class="top">
+
+    <div class="title">
+      ⚔️ VOCÊ CONTROLA A BATALHA
+    </div>
+
+    <div class="instruction">
+
+      <span class="gift">
+        🎁 ENVIE UM PRESENTE
+      </span>
+
+      → A AÇÃO ACONTECE NO JOGO
+
+    </div>
+
+  </div>
+
+
+
+  <!-- JOGO -->
+
+  <div class="game">
+
+    <iframe
+      src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
+      allow="autoplay">
+    </iframe>
+
+  </div>
+
+
+
+  <!-- RODAPÉ -->
+
+  <div class="bottom">
+
+    <div class="comment">
+      💬 COMENTE E A LIVE RESPONDE
+      <span class="speaker">🔊</span>
+    </div>
+
+  </div>
+
+
+</div>
 
 </body>
+
 </html>
