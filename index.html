@@ -1,241 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
+    }
 
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no,
-viewport-fit=cover">
+    .legenda {
+      position: fixed;
+      left: 5%;
+      width: 90%;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: clamp(20px, 5vw, 48px);
+      font-weight: 900;
+      color: #fff;
+      text-shadow:
+        -2px -2px 0 #000,
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000;
+    }
 
-<title>Live Interativa</title>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.live {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-}
-
-/* TOPO */
-
-.top {
-  position: absolute;
-  top: 4vh !important;
-  left: 0; !important;
-
-  width: 100%;
-  height: 7vh;
-
-  overflow: hidden;
-  z-index: 20;
-}
-
-.top img {
-  position: absolute;
-  inset: 50;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  object-position: center;
-}
-
-.top-overlay {
-  position: absolute;
-  inset: 0;
-
-  z-index: 2;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background: rgba(0,0,0,.30);
-
-  color: white;
-  text-align: center;
-}
-
-.title {
-  font-size: clamp(18px, 5vw, 29px);
-  font-weight: 900;
-
-  text-shadow: 0 2px 6px rgba(0,0,0,.95);
-}
-
-.gift {
-  margin-top: 5px;
-
-  font-size: clamp(11px, 3.2vw, 17px);
-  font-weight: 900;
-
-  color: #ffd84d;
-
-  text-shadow: 0 2px 6px rgba(0,0,0,.95);
-}
-
-
-/* JOGO */
-
-.game {
-  position: absolute;
-
-  top: 11vh !important;
-  left: 0;
-
-  width: 100%;
-  height: 77vh;
-
-  overflow: hidden;
-
-  background: #000;
-}
-
-.game iframe {
-  width: 100%;
-  height: 100%;
-
-  border: 0;
-  display: block;
-
-  background: #000;
-}
-
-
-/* RODAPÉ */
-
-.bottom {
-  position: absolute;
-
-  bottom: 5%;
-  left: 0;
-
-  width: 100%;
-  height: 7%;
-
-  overflow: hidden;
-
-  z-index: 20;
-}
-
-.bottom img {
-  position: absolute;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  object-position: center;
-}
-
-.bottom-overlay {
-  position: absolute;
-  inset: 0;
-
-  z-index: 2;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0 15px;
-
-  background: rgba(0,0,0,.30);
-
-  color: white;
-  text-align: center;
-}
-
-.comment {
-  font-size: clamp(14px, 3.8vw, 21px);
-  font-weight: 900;
-
-  text-shadow: 0 2px 6px rgba(0,0,0,.95);
-}
-
-</style>
+    .superior { top: 12%; }
+    .inferior { bottom: 18%; }
+  </style>
 </head>
-
-
 <body>
-
-<div class="live">
-
-  <!-- TOPO AZUL -->
-
-  <div class="top">
-
-    <img src="top-blue.PNG" alt="">
-
-    <div class="top-overlay">
-
-      <div class="title">
-       🔥 BATALHA DO BRASIL
-      </div>
-
-      <div class="gift">
-       ESCOLHA SEU LADO
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- JOGO -->
-
-  <div class="game">
-
-    <iframe
-      src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
-      allow="autoplay">
-    </iframe>
-
-  </div>
-
-
-  <!-- RODAPÉ VERMELHO -->
-
-  <div class="bottom">
-
-    <img src="bottom-red.PNG" alt="">
-
-    <div class="bottom-overlay">
-
-      <div class="comment">
-       EM QUEM VOCÊ APOIA?
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
+  <div class="legenda superior">VOCÊ CONTROLA A LIVE!</div>
+  <div class="legenda inferior">COMENTE, A LIVE RESPONDE!</div>
 </body>
-
 </html>
