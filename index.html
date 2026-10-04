@@ -1,39 +1,265 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
 
-    .legenda {
-      position: fixed;
-      left: 5%;
-      width: 90%;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      font-size: clamp(20px, 5vw, 48px);
-      font-weight: 900;
-      color: #fff;
-      text-shadow:
-        -2px -2px 0 #000,
-         2px -2px 0 #000,
-        -2px  2px 0 #000,
-         2px  2px 0 #000;
-    }
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
-    .superior { top: 12%; }
-    .inferior { bottom: 18%; }
-  </style>
+<title>Live Interativa</title>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #080b12;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* TELA */
+
+.live {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #080b12;
+  overflow: hidden;
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.top {
+  position: absolute;
+  z-index: 20;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 7%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  text-align: center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #090c14 0%,
+      #101521 100%
+    );
+
+  border-bottom:
+    1px solid rgba(255,255,255,.12);
+}
+
+
+/* TÍTULO */
+
+.title {
+  font-size: clamp(17px, 4.8vw, 27px);
+  font-weight: 900;
+  letter-spacing: .3px;
+  line-height: 1.1;
+}
+
+
+/* MENSAGENS */
+
+.messages {
+  position: relative;
+
+  width: 100%;
+  height: 24px;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+}
+
+.message {
+  position: absolute;
+
+  width: 100%;
+
+  left: 0;
+  top: 0;
+
+  font-size: clamp(11px, 3vw, 16px);
+  font-weight: 800;
+
+  opacity: 0;
+
+  transform: translateY(4px);
+}
+
+
+/* PRESENTE */
+
+.gift {
+  color: #ffd54a;
+
+  animation:
+    showGift 8s infinite;
+}
+
+
+/* COMENTÁRIO */
+
+.comment {
+  color: #ffffff;
+
+  animation:
+    showComment 8s infinite;
+}
+
+
+/* ANIMAÇÕES */
+
+@keyframes showGift {
+
+  0% {
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  45% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes showComment {
+
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  95% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* =========================
+   JOGO
+========================= */
+
+.game {
+  position: absolute;
+
+  top: 7%;
+  left: 0;
+
+  width: 100%;
+  height: 93%;
+
+  overflow: hidden;
+
+  background: #080b12;
+}
+
+.game iframe {
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+
+  display: block;
+
+  background: #080b12;
+}
+
+</style>
 </head>
+
+
 <body>
-  <div class="legenda superior">VOCÊ CONTROLA A LIVE!</div>
-  <div class="legenda inferior">COMENTE, A LIVE RESPONDE!</div>
+
+<div class="live">
+
+
+  <!-- CABEÇALHO -->
+
+  <div class="top">
+
+    <div class="title">
+      ⚔️ VOCÊ CONTROLA A BATALHA
+    </div>
+
+
+    <div class="messages">
+
+      <div class="message gift">
+        🎁 PRESENTE = AÇÃO NO JOGO
+      </div>
+
+      <div class="message comment">
+        💬 COMENTE = A LIVE RESPONDE 🔊
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- JOGO -->
+
+  <div class="game">
+
+    <iframe
+      src="COLE_SUA_URL_DO_LIVECADE_AQUI"
+      allow="autoplay">
+    </iframe>
+
+  </div>
+
+
+</div>
+
 </body>
 </html>
