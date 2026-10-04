@@ -15,8 +15,6 @@ viewport-fit=cover">
 
 <style>
 
-/* RESET */
-
 * {
   margin: 0;
   padding: 0;
@@ -34,22 +32,17 @@ html, body {
 .live {
   position: fixed;
   inset: 0;
-
   width: 100vw;
   height: 100vh;
-
   overflow: hidden;
   background: #05070c;
 }
 
 
-/* ==================================
-   TOPO AZUL
-================================== */
+/* TOPO AZUL */
 
 .top {
   position: absolute;
-
   top: 0;
   left: 0;
 
@@ -81,27 +74,17 @@ html, body {
     1px solid rgba(255,255,255,.18);
 }
 
-
-/* TÍTULO */
-
 .title {
   font-size: clamp(18px, 5vw, 29px);
-
   font-weight: 900;
-
   letter-spacing: .3px;
-
   line-height: 1;
 }
-
-
-/* PRESENTE */
 
 .gift {
   margin-top: 6px;
 
   font-size: clamp(11px, 3.2vw, 17px);
-
   font-weight: 900;
 
   color: #ffd84d;
@@ -111,9 +94,7 @@ html, body {
 }
 
 
-/* ==================================
-   JOGO
-================================== */
+/* JOGO */
 
 .game {
   position: absolute;
@@ -143,9 +124,7 @@ html, body {
 }
 
 
-/* ==================================
-   RODAPÉ VERMELHO
-================================== */
+/* RODAPÉ VERMELHO */
 
 .bottom {
   position: absolute;
@@ -173,7 +152,7 @@ html, body {
       rgba(0,0,0,.30),
       rgba(0,0,0,.55)
     ),
-    url("Bottom-red.png");
+    url("bottom-red.png");
 
   background-size: cover;
   background-position: center;
@@ -183,12 +162,8 @@ html, body {
     1px solid rgba(255,255,255,.18);
 }
 
-
-/* COMENTÁRIO */
-
 .comment {
   font-size: clamp(14px, 3.8vw, 21px);
-
   font-weight: 900;
 
   text-shadow:
@@ -196,7 +171,7 @@ html, body {
 }
 
 
-/* ANIMAÇÃO MUITO LEVE */
+/* ANIMAÇÃO LEVE */
 
 @keyframes attention {
 
@@ -223,7 +198,6 @@ html, body {
 
 <div class="live">
 
-
   <!-- TOPO AZUL -->
 
   <div class="top">
@@ -239,18 +213,16 @@ html, body {
   </div>
 
 
-
-  <!-- BRIDGE BRAWL -->
+  <!-- JOGO -->
 
   <div class="game">
 
     <iframe
-      src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
+      src="COLE_SUA_URL_DO_LIVECADE_AQUI"
       allow="autoplay">
     </iframe>
 
   </div>
-
 
 
   <!-- RODAPÉ VERMELHO -->
@@ -262,7 +234,6 @@ html, body {
     </div>
 
   </div>
-
 
 </div>
 
