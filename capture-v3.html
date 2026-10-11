@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>NOX | Captura V3</title>
+<style>body{font:16px system-ui;background:#111021;color:#fff;text-align:center;margin:0;padding:18px}h2{margin:8px 0}button,input{font:inherit;padding:12px;border-radius:9px;border:1px solid #a18bff}button{background:#7954e8;color:white;font-weight:600}button:disabled{opacity:.55}input{box-sizing:border-box;width:min(96%,410px);background:#22213b;color:white}video{width:min(94vw,420px);border-radius:18px;transform:scaleX(-1);background:#333}#status{color:#9af3cb;white-space:pre-wrap;line-height:1.5;min-height:75px}small{display:block;color:#b6b1c8;margin:10px}#log{font:12px ui-monospace,monospace;color:#e2c5ff;white-space:pre-wrap;overflow-wrap:anywhere}</style></head>
+<body><h2>NOX • Captura facial V3</h2><p>Servidor WebSocket seguro (wss://)</p><input id="url" placeholder="wss://seu-tunel.trycloudflare.com" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url"><p><button id="start">Iniciar câmera</button></p><p id="status">Aguardando início</p><video id="video" autoplay playsinline muted></video><small>Somente números das expressões são enviados ao servidor, não o vídeo.</small><div id="log"></div>
+<script>
+(function(){
+ const $=id=>document.getElementById(id), video=$('video'), btn=$('start');
+ let ws=null, mesh=null, busy=false, lastSent=0, lastVideoTime=-1, active=false;
+ function status(s){$('status').textContent=s}
+ function log(s){$('log').textContent=s}
+ function loadScript(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.onload=resolve;s.onerror=()=>reject(new Error('Falha ao baixar '+url));document.head.appendChild(s)})}
+ async function loadMesh(){
+  const sources=['https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js','https://unpkg.com/@mediapipe/face_mesh@0.4/face_mesh.js'];
+  for(const src of sources){try{await loadScript(src);if(window.FaceMesh)return src.slice(0,src.indexOf('/npm/'))||src}catch(e){log(e.message)}}
+  throw Error('Não foi possível carregar o rastreador facial. Verifique a conexão do iPhone com a internet.');
+ }
+ const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+ const clamp=x=>Math.max(0,Math.min(1,x));
+ function process(results){
+  const p=results.multiFaceLandmarks&&results.multiFaceLandmarks[0];
+  if(!p){status('Câmera ativa ✓\nProcurando rosto…\nServidor: '+(ws&&ws.readyState===1?'conectado':'não conectado'));return}
+  // Landmarks FaceMesh: 13/14 inner lips, 33/133 eye width, 159/145 left eyelid; 362/263 eye width, 386/374 right eyelid.
+  const mouth=clamp((dist(p[13],p[14])/Math.max(.001,dist(p[61],p[291]))-.015)*5.5);
+  const leftRatio=dist(p[159],p[145])/Math.max(.001,dist(p[33],p[133]));
+  const rightRatio=dist(p[386],p[374])/Math.max(.001,dist(p[362],p[263]));
+  const blinkL=clamp((.28-leftRatio)/.19),blinkR=clamp((.28-rightRatio)/.19);
+  const smile=clamp((dist(p[61],p[291])/Math.max(.001,dist(p[234],p[454]))-.32)*4);
+  const roll=Math.atan2(p[263].y-p[33].y,p[263].x-p[33].x);
+  const data={type:'face',mouth,blinkL,blinkR,smile,roll};
+  const now=performance.now();if(ws&&ws.readyState===1&&now-lastSent>65){ws.send(JSON.stringify(data));lastSent=now}
+  status('Rosto detectado ✓\nBoca: '+Math.round(mouth*100)+'% | Piscadas: '+Math.round(blinkL*100)+'% / '+Math.round(blinkR*100)+'%\nServidor: '+(ws&&ws.readyState===1?'conectado':'não conectado'));
+ }
+ async function loop(){if(!active)return;if(!busy&&video.readyState>=2&&video.currentTime!==lastVideoTime){busy=true;lastVideoTime=video.currentTime;try{await mesh.send({image:video})}catch(e){status('Erro no rastreamento: '+e.message);active=false}finally{busy=false}}requestAnimationFrame(loop)}
+ btn.onclick=async()=>{
+  btn.disabled=true;
+  try{
+   status('1/3 Solicitando acesso à câmera…');
+   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw Error('A câmera exige Safari em HTTPS.');
+   const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false});
+   video.srcObject=stream;await video.play();status('2/3 Câmera ativa ✓\nCarregando rastreador…');
+   await loadMesh();
+   // Use a known CDN root for MediaPipe assets; classic script avoids ESM import incompatibility.
+   mesh=new window.FaceMesh({locateFile:file=>'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/'+file});
+   mesh.setOptions({maxNumFaces:1,refineLandmarks:false,minDetectionConfidence:.5,minTrackingConfidence:.5});
+   mesh.onResults(process);
+   status('3/3 Rastreador carregado ✓\nConectando ao servidor…');
+   const url=$('url').value.trim();
+   if(/^wss:\/\//i.test(url)){
+    try{ws=new WebSocket(url);ws.onopen=()=>log('WebSocket conectado ✓');ws.onerror=()=>log('WebSocket com erro. Confira o túnel.');ws.onclose=()=>log('WebSocket desconectado.')}catch(e){log('WebSocket: '+e.message)}
+   }else{log('Sem endereço wss:// válido. A detecção local ainda funciona.')}
+   active=true;requestAnimationFrame(loop);
+  }catch(e){status('Erro: '+(e&&e.message||String(e)));btn.disabled=false}
+ };
+})();
+</script></body></html>
