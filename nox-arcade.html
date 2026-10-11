@@ -5,8 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080b19">
-
-<title>NOX Arcade V4 - Somente Jogo</title>
+<title>NOX Arcade V3</title>
 
 <style>
 * {
@@ -15,56 +14,265 @@
 
 html, body {
   margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: #080b19;
+  font-family: Arial, sans-serif;
 }
 
+/* TELA DA LIVE */
+
 .stage {
-  position: fixed;
-  inset: 0;
   width: 100%;
   height: 100vh;
   height: 100dvh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  background: #080b19;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* PERSONAGEM NOX */
+
+.avatar {
+  position: relative;
+  height: 23%;
+  width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #110c24;
+  border-bottom: 2px solid #873dff;
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 43%;
+  animation: idle 4s ease-in-out infinite;
+}
+
+.avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 55%,
+    rgba(0,0,0,0.3)
+  );
+}
+
+.brand {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  color: white;
+  font-size: 24px;
+  font-weight: 900;
+  text-align: right;
+  text-shadow: 0 0 12px #a34aff;
+}
+
+.brand small {
+  display: block;
+  font-size: 10px;
+  font-weight: normal;
+  color: #cdb9ff;
+}
+
+/* ÁREA DO JOGO */
 
 .game {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 100%;
   overflow: hidden;
-  background: #080b19;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #20245b 0%,
+      #10132f 55%,
+      #080b19 100%
+    );
 }
+
+/* LIVECADE ORIGINAL */
 
 .game iframe {
-  display: block;
   position: absolute;
-  inset: 0;
-  width: 100%;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  width: 116%;
   height: 100%;
-  border: 0;
-  background: #080b19;
+  border: none;
+  display: block;
+  transform: translateX(-50%);
 }
 
+/* EXPANSÃO VISUAL DAS LATERAIS */
+
+.side {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.side.left {
+  left: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #090c24 0%,
+      #171849 55%,
+      #25205b 100%
+    );
+  border-right: 1px solid rgba(139,92,246,0.25);
+  box-shadow: inset -12px 0 24px rgba(88,56,180,0.15);
+}
+
+.side.right {
+  right: 0;
+  background:
+    linear-gradient(
+      270deg,
+      #090c24 0%,
+      #171849 55%,
+      #25205b 100%
+    );
+  border-left: 1px solid rgba(139,92,246,0.25);
+  box-shadow: inset 12px 0 24px rgba(88,56,180,0.15);
+}
+
+/* ILUMINAÇÃO DAS BORDAS */
+
+.side::before {
+  content: "";
+  position: absolute;
+  top: -15%;
+  width: 160%;
+  height: 55%;
+  background: radial-gradient(
+    ellipse,
+    rgba(113,64,255,0.32),
+    transparent 70%
+  );
+  animation: glow 7s ease-in-out infinite alternate;
+}
+
+.side.left::before {
+  left: -60%;
+}
+
+.side.right::before {
+  right: -60%;
+}
+
+/* LINHAS DECORATIVAS */
+
+.side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 72px,
+    rgba(116,89,255,0.18) 73px,
+    transparent 74px
+  );
+}
+
+/* ANIMAÇÃO SUAVE DO NOX */
+
+@keyframes idle {
+  0%, 100% {
+    transform: scale(1.01) translateY(0);
+  }
+  50% {
+    transform: scale(1.03) translateY(-2px);
+  }
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateY(30px);
+  }
+}
+
+/* MODO PAISAGEM */
+
+@media (orientation: landscape) {
+  .stage {
+    flex-direction: row;
+  }
+
+  .avatar {
+    width: 30%;
+    height: 100%;
+    border-bottom: none;
+    border-right: 2px solid #873dff;
+  }
+
+  .game {
+    width: 70%;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <main class="stage">
+
+  <!-- NOX -->
+  <section class="avatar">
+
+    <img
+      src="nox-preview.webp"
+      alt="NOX"
+    >
+
+    <div class="brand">
+      NOX
+      <small>ARCADE</small>
+    </div>
+
+  </section>
+
+  <!-- LIVECADE -->
   <section class="game">
+
     <iframe
       src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
-      title="Crowd Says - Livecade"
+      title="Livecade"
       allow="autoplay; fullscreen"
       allowfullscreen>
     </iframe>
+
+    <!-- BORDAS DECORATIVAS -->
+    <div class="side left"></div>
+    <div class="side right"></div>
+
   </section>
+
 </main>
 
 </body>
