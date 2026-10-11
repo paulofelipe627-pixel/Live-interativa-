@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#090b19">
-<title>NOX Arcade V2</title>
+<meta name="theme-color" content="#080b19">
+<title>NOX Arcade V3</title>
 
 <style>
 * {
@@ -17,10 +17,11 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #090b19;
-  color: white;
+  background: #080b19;
   font-family: Arial, sans-serif;
 }
+
+/* TELA DA LIVE */
 
 .stage {
   width: 100%;
@@ -37,11 +38,11 @@ html, body {
 
 .avatar {
   position: relative;
-  width: 100%;
   height: 23%;
+  width: 100%;
   flex-shrink: 0;
   overflow: hidden;
-  background: #100b20;
+  background: #110c24;
   border-bottom: 2px solid #873dff;
 }
 
@@ -71,9 +72,10 @@ html, body {
   z-index: 2;
   top: 12px;
   right: 12px;
-  text-align: right;
-  font-weight: 900;
+  color: white;
   font-size: 24px;
+  font-weight: 900;
+  text-align: right;
   text-shadow: 0 0 12px #a34aff;
 }
 
@@ -84,49 +86,7 @@ html, body {
   color: #cdb9ff;
 }
 
-.status {
-  position: absolute;
-  z-index: 3;
-  right: 10px;
-  bottom: 8px;
-  padding: 5px 10px;
-  border: 1px solid #8b5cf6;
-  border-radius: 30px;
-  background: rgba(15,10,30,0.8);
-  font-size: 11px;
-}
-
-/* BOTÕES DE TESTE */
-
-.controls {
-  position: absolute;
-  z-index: 5;
-  left: 8px;
-  top: 8px;
-  display: flex;
-  gap: 4px;
-  opacity: 0.2;
-}
-
-.controls button {
-  padding: 5px 7px;
-  color: white;
-  background: #241a40;
-  border: 1px solid #7954cf;
-  border-radius: 6px;
-  font-size: 10px;
-}
-
-.controls:active,
-.controls:focus-within {
-  opacity: 1;
-}
-
-body.hidecontrols .controls {
-  display: none;
-}
-
-/* ÁREA DO LIVECADE */
+/* ÁREA DO JOGO */
 
 .game {
   position: relative;
@@ -134,22 +94,108 @@ body.hidecontrols .controls {
   min-height: 0;
   width: 100%;
   overflow: hidden;
-  background: #080b19;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #20245b 0%,
+      #10132f 55%,
+      #080b19 100%
+    );
 }
 
+/* LIVECADE ORIGINAL */
+
 .game iframe {
-  display: block;
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 50%;
   width: 116%;
   height: 100%;
-  border: 0;
+  border: none;
+  display: block;
   transform: translateX(-50%);
-  transform-origin: center center;
 }
 
-/* ANIMAÇÕES DE TESTE */
+/* EXPANSÃO VISUAL DAS LATERAIS */
+
+.side {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.side.left {
+  left: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #090c24 0%,
+      #171849 55%,
+      #25205b 100%
+    );
+  border-right: 1px solid rgba(139,92,246,0.25);
+  box-shadow: inset -12px 0 24px rgba(88,56,180,0.15);
+}
+
+.side.right {
+  right: 0;
+  background:
+    linear-gradient(
+      270deg,
+      #090c24 0%,
+      #171849 55%,
+      #25205b 100%
+    );
+  border-left: 1px solid rgba(139,92,246,0.25);
+  box-shadow: inset 12px 0 24px rgba(88,56,180,0.15);
+}
+
+/* ILUMINAÇÃO DAS BORDAS */
+
+.side::before {
+  content: "";
+  position: absolute;
+  top: -15%;
+  width: 160%;
+  height: 55%;
+  background: radial-gradient(
+    ellipse,
+    rgba(113,64,255,0.32),
+    transparent 70%
+  );
+  animation: glow 7s ease-in-out infinite alternate;
+}
+
+.side.left::before {
+  left: -60%;
+}
+
+.side.right::before {
+  right: -60%;
+}
+
+/* LINHAS DECORATIVAS */
+
+.side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 72px,
+    rgba(116,89,255,0.18) 73px,
+    transparent 74px
+  );
+}
+
+/* ANIMAÇÃO SUAVE DO NOX */
 
 @keyframes idle {
   0%, 100% {
@@ -160,31 +206,18 @@ body.hidecontrols .controls {
   }
 }
 
-@keyframes talking {
+@keyframes glow {
   from {
-    transform: scale(1.02);
+    opacity: 0.35;
+    transform: translateY(0);
   }
   to {
-    transform: scale(1.055) translateY(-2px);
+    opacity: 0.8;
+    transform: translateY(30px);
   }
 }
 
-@keyframes celebrating {
-  from {
-    transform: scale(1.02) rotate(-1deg);
-  }
-  to {
-    transform: scale(1.06) rotate(1deg);
-  }
-}
-
-.avatar.talk img {
-  animation: talking 0.23s ease-in-out infinite alternate;
-}
-
-.avatar.celebrate img {
-  animation: celebrating 0.45s ease-in-out infinite alternate;
-}
+/* MODO PAISAGEM */
 
 @media (orientation: landscape) {
   .stage {
@@ -194,6 +227,8 @@ body.hidecontrols .controls {
   .avatar {
     width: 30%;
     height: 100%;
+    border-bottom: none;
+    border-right: 2px solid #873dff;
   }
 
   .game {
@@ -207,28 +242,22 @@ body.hidecontrols .controls {
 
 <main class="stage">
 
-  <section class="avatar" id="avatar">
+  <!-- NOX -->
+  <section class="avatar">
 
-    <img src="nox-preview.webp" alt="NOX">
+    <img
+      src="nox-preview.webp"
+      alt="NOX"
+    >
 
     <div class="brand">
       NOX
-      <small>ARCADE • V2</small>
-    </div>
-
-    <div class="status" id="status">
-      Aguardando...
-    </div>
-
-    <div class="controls">
-      <button onclick="react('idle')">Parado</button>
-      <button onclick="react('talk')">Falar</button>
-      <button onclick="react('celebrate')">Comemorar</button>
-      <button onclick="document.body.classList.add('hidecontrols')">Ocultar</button>
+      <small>ARCADE</small>
     </div>
 
   </section>
 
+  <!-- LIVECADE -->
   <section class="game">
 
     <iframe
@@ -238,38 +267,13 @@ body.hidecontrols .controls {
       allowfullscreen>
     </iframe>
 
+    <!-- BORDAS DECORATIVAS -->
+    <div class="side left"></div>
+    <div class="side right"></div>
+
   </section>
 
 </main>
-
-<script>
-const avatar = document.getElementById("avatar");
-const statusBox = document.getElementById("status");
-
-let reactionTimeout;
-
-function react(mode) {
-  clearTimeout(reactionTimeout);
-
-  avatar.classList.remove("talk", "celebrate");
-
-  if (mode === "talk") {
-    avatar.classList.add("talk");
-    statusBox.textContent = "NOX falando";
-  } else if (mode === "celebrate") {
-    avatar.classList.add("celebrate");
-    statusBox.textContent = "NOX comemorando";
-  } else {
-    statusBox.textContent = "Aguardando...";
-  }
-
-  if (mode !== "idle") {
-    reactionTimeout = setTimeout(function() {
-      react("idle");
-    }, 3500);
-  }
-}
-</script>
 
 </body>
 </html>
