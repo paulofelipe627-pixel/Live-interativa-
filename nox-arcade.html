@@ -1,13 +1,275 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090b19"><title>NOX Arcade — V1</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090b19">
+<title>NOX Arcade V2</title>
+
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090b19;font-family:system-ui,-apple-system,sans-serif;color:#fff}.stage{height:100dvh;width:100vw;display:flex;flex-direction:column;gap:5px;padding:env(safe-area-inset-top) 4px env(safe-area-inset-bottom)}.avatar{height:29%;min-height:0;position:relative;overflow:hidden;border:1px solid #7943df;border-radius:12px;background:linear-gradient(115deg,#1a1032,#070d1e)}.avatar img{height:100%;width:100%;object-fit:cover;object-position:center 43%;display:block;transform:scale(1.02);animation:float 4s ease-in-out infinite}.avatar::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 55%,rgba(0,0,0,.55))}.brand{position:absolute;z-index:1;right:12px;top:12px;text-align:right;font-weight:900;font-size:clamp(14px,5vw,24px);text-shadow:0 0 12px #923fff}.brand small{display:block;font-weight:500;font-size:10px;color:#c8b5ff}.status{position:absolute;z-index:2;bottom:8px;right:10px;padding:5px 9px;border-radius:99px;background:#181229cc;font-size:11px;border:1px solid #8b5cf6}.game{flex:1;min-height:0;overflow:hidden;border:1px solid #284a9e;border-radius:12px;background:#0d1634;position:relative}.game iframe{display:block;width:100%;height:100%;border:0}.fallback{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}.controls{position:absolute;left:8px;top:8px;z-index:4;display:flex;gap:5px;opacity:.25;transition:opacity .2s}.controls:focus-within,.controls:hover{opacity:1}.controls button{background:#201a3a;color:white;border:1px solid #7556c8;border-radius:8px;padding:5px 7px;font-size:10px}body.hidecontrols .controls{display:none}@keyframes float{0%,100%{transform:scale(1.02) translateY(0)}50%{transform:scale(1.04) translateY(-2px)}}.avatar.talk img{animation:talk .23s ease-in-out infinite alternate}.avatar.celebrate img{animation:celebrate .45s ease-in-out infinite alternate}@keyframes talk{from{transform:scale(1.025)}to{transform:scale(1.055) translateY(-2px)}}@keyframes celebrate{from{transform:scale(1.03) rotate(-1deg)}to{transform:scale(1.07) rotate(1deg)}}@media (orientation:landscape){.stage{flex-direction:row}.avatar{height:100%;width:32%}.game{height:100%}}
-</style></head>
-<body><main class="stage"><section id="avatar" class="avatar" aria-label="NOX, apresentador virtual"><img src="nox-preview.webp" alt="Prévia estática do NOX"><div class="brand">NOX<small>ARCADE • V1</small></div><div id="status" class="status">Aguardando...</div><div class="controls"><button onclick="react('idle')">Parado</button><button onclick="react('talk')">Falar</button><button onclick="react('celebrate')">Comemorar</button><button onclick="document.body.classList.add('hidecontrols')">Ocultar</button></div></section><section class="game" aria-label="Jogo Livecade"><iframe title="Jogo Livecade" src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj" allow="autoplay; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></section></main><script>
-const avatar=document.getElementById('avatar'),status=document.getElementById('status');let timeout;
-function react(mode){clearTimeout(timeout);avatar.classList.remove('talk','celebrate');if(mode==='talk'){avatar.classList.add('talk');status.textContent='NOX falando (simulação)'}else if(mode==='celebrate'){avatar.classList.add('celebrate');status.textContent='NOX comemorando (simulação)'}else{status.textContent='Aguardando...'}if(mode!=='idle')timeout=setTimeout(()=>react('idle'),3500)}
-// V1: apenas prévia visual. Não há conexão com TikTok nem animação labial real.
-</script></body></html>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #090b19;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.stage {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* PERSONAGEM NOX */
+
+.avatar {
+  position: relative;
+  width: 100%;
+  height: 23%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #100b20;
+  border-bottom: 2px solid #873dff;
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 43%;
+  animation: idle 4s ease-in-out infinite;
+}
+
+.avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 55%,
+    rgba(0,0,0,0.3)
+  );
+}
+
+.brand {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  text-align: right;
+  font-weight: 900;
+  font-size: 24px;
+  text-shadow: 0 0 12px #a34aff;
+}
+
+.brand small {
+  display: block;
+  font-size: 10px;
+  font-weight: normal;
+  color: #cdb9ff;
+}
+
+.status {
+  position: absolute;
+  z-index: 3;
+  right: 10px;
+  bottom: 8px;
+  padding: 5px 10px;
+  border: 1px solid #8b5cf6;
+  border-radius: 30px;
+  background: rgba(15,10,30,0.8);
+  font-size: 11px;
+}
+
+/* BOTÕES DE TESTE */
+
+.controls {
+  position: absolute;
+  z-index: 5;
+  left: 8px;
+  top: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0.2;
+}
+
+.controls button {
+  padding: 5px 7px;
+  color: white;
+  background: #241a40;
+  border: 1px solid #7954cf;
+  border-radius: 6px;
+  font-size: 10px;
+}
+
+.controls:active,
+.controls:focus-within {
+  opacity: 1;
+}
+
+body.hidecontrols .controls {
+  display: none;
+}
+
+/* ÁREA DO LIVECADE */
+
+.game {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  background: #080b19;
+}
+
+.game iframe {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 116%;
+  height: 100%;
+  border: 0;
+  transform: translateX(-50%);
+  transform-origin: center center;
+}
+
+/* ANIMAÇÕES DE TESTE */
+
+@keyframes idle {
+  0%, 100% {
+    transform: scale(1.01) translateY(0);
+  }
+  50% {
+    transform: scale(1.03) translateY(-2px);
+  }
+}
+
+@keyframes talking {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.055) translateY(-2px);
+  }
+}
+
+@keyframes celebrating {
+  from {
+    transform: scale(1.02) rotate(-1deg);
+  }
+  to {
+    transform: scale(1.06) rotate(1deg);
+  }
+}
+
+.avatar.talk img {
+  animation: talking 0.23s ease-in-out infinite alternate;
+}
+
+.avatar.celebrate img {
+  animation: celebrating 0.45s ease-in-out infinite alternate;
+}
+
+@media (orientation: landscape) {
+  .stage {
+    flex-direction: row;
+  }
+
+  .avatar {
+    width: 30%;
+    height: 100%;
+  }
+
+  .game {
+    width: 70%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="stage">
+
+  <section class="avatar" id="avatar">
+
+    <img src="nox-preview.webp" alt="NOX">
+
+    <div class="brand">
+      NOX
+      <small>ARCADE • V2</small>
+    </div>
+
+    <div class="status" id="status">
+      Aguardando...
+    </div>
+
+    <div class="controls">
+      <button onclick="react('idle')">Parado</button>
+      <button onclick="react('talk')">Falar</button>
+      <button onclick="react('celebrate')">Comemorar</button>
+      <button onclick="document.body.classList.add('hidecontrols')">Ocultar</button>
+    </div>
+
+  </section>
+
+  <section class="game">
+
+    <iframe
+      src="https://overlay.livecade.io/EPMcQ26hOojfdtqIBHm6UOXLoLHDC6oj"
+      title="Livecade"
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
+
+  </section>
+
+</main>
+
+<script>
+const avatar = document.getElementById("avatar");
+const statusBox = document.getElementById("status");
+
+let reactionTimeout;
+
+function react(mode) {
+  clearTimeout(reactionTimeout);
+
+  avatar.classList.remove("talk", "celebrate");
+
+  if (mode === "talk") {
+    avatar.classList.add("talk");
+    statusBox.textContent = "NOX falando";
+  } else if (mode === "celebrate") {
+    avatar.classList.add("celebrate");
+    statusBox.textContent = "NOX comemorando";
+  } else {
+    statusBox.textContent = "Aguardando...";
+  }
+
+  if (mode !== "idle") {
+    reactionTimeout = setTimeout(function() {
+      react("idle");
+    }, 3500);
+  }
+}
+</script>
+
+</body>
+</html>
